@@ -20,7 +20,39 @@ function buildPanelData(sample) {
   });
 }
 
+function buildCharts(sample) {
+    d3.json("Data/samples.json").then((data) => {
+      var sampleData = data.samples;
+      var buildArray = sampleData.filter(sampleObj => sampleObj.id == sample);
+      var result = buildArray[0];
+  
+      var otu_ids = result.otu_ids;
+      var otu_labels = result.otu_labels;
+      var sample_values = result.sample_values;
 
+      // Create a bubble chart that displays each sample.
+    var bubbleChart = {
+        title: "Bacteria Cultures Per Sample",
+        hovermode: "closest",
+        xaxis: { title: "OTU ID" },
+      };
+      var bubbleData = [
+        {
+          x: otu_ids,
+          y: sample_values,
+          text: otu_labels,
+          mode: "markers",
+          marker: {
+            size: sample_values,
+            color: otu_ids,
+            colorscale: "Earth"
+          }
+        }
+      ];
+  
+      Plotly.newPlot("bubble", bubbleData, bubbleChart);
+      
+      
 
   function init() {
     // Create the function for event change on the dropdown
@@ -37,7 +69,7 @@ function buildPanelData(sample) {
           .property("value", sample);
       })
   
-
+   
   
 // Initialize the dashboard
   init()
