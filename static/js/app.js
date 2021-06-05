@@ -30,6 +30,27 @@ function buildCharts(sample) {
       var otu_labels = result.otu_labels;
       var sample_values = result.sample_values;
 
+    //Create a horizontal bar chart with a dropdown menu to display the top 10 OTUs found in that individual.
+    //Similar to Greek god sort slice
+    
+      var yticks = otu_ids.slice(0, 10).map(otuID => `OTU ${otuID}`).reverse();
+      var barData = [
+        {
+          y: yticks,
+          x: sample_values.slice(0, 10).reverse(),
+          text: otu_labels.slice(0, 10).reverse(),
+          type: "bar",
+          orientation: "h",
+        }
+      ];
+  
+      var chartLayout = {
+        title: "Top 10 Bacteria Cultures Found",
+        margin: { t: 25, l: 150 }
+      };
+  
+      Plotly.newPlot("bar", barData, chartLayout);
+
       // Create a bubble chart that displays each sample.
     var bubbleChart = {
         title: "Bacteria Cultures Per Sample",
@@ -52,7 +73,8 @@ function buildCharts(sample) {
   
       Plotly.newPlot("bubble", bubbleData, bubbleChart);
       
-      
+    });
+  };
 
   function init() {
     // Create the function for event change on the dropdown
@@ -69,9 +91,7 @@ function buildCharts(sample) {
           .property("value", sample);
       })
   
-   
+
   
 // Initialize the dashboard
   init()
-//Create a horizontal bar chart with a dropdown menu to display the top 10 OTUs found in that individual.
-//Similar to Greek god sort slice
