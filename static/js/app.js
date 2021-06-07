@@ -14,7 +14,6 @@ function buildPanelData(sample) {
     panelData.html("");
 
     // Use Object.entries to get key/value pair to the panelData
-    //Uppercase data
     Object.entries(result).forEach(([key, value]) => {
       panelData.append("h5").text(`${key.toUpperCase()}: ${value}`);
     });
@@ -44,7 +43,7 @@ function buildCharts(sample) {
           orientation: "h",
         }
       ];
-    //Define layout
+      //Define layout
       var chartLayout = {
         title: "Top 10 Bacteria Cultures Found",
         margin: { t: 25, l: 150 }
@@ -94,14 +93,14 @@ function buildCharts(sample) {
           .property("value", sample);
       })
   
-      // Use data from the list to generate charts and sidepanel
+      // Use the sample data from the list to generate charts and side panel
       var sampleData = name[0];
       buildCharts(sampleData);
       buildPanelData(sampleData);
     });
   };
   
-  function newSelection(newSample) {
+  function optionChanged(newSample) {
     // Generate new data each time a new sample is selected
     buildCharts(newSample);
     buildPanelData(newSample);
