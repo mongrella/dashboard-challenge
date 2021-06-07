@@ -10,10 +10,11 @@ function buildPanelData(sample) {
     // Use d3.select to grab value
     var panelData = d3.select("#sample-metadata");
 
-    // Clear the existing data in the html
+    // Clear the existing data
     panelData.html("");
 
     // Use Object.entries to get key/value pair to the panelData
+    //Uppercase data
     Object.entries(result).forEach(([key, value]) => {
       panelData.append("h5").text(`${key.toUpperCase()}: ${value}`);
     });
@@ -43,15 +44,16 @@ function buildCharts(sample) {
           orientation: "h",
         }
       ];
-  
+    //Define layout
       var chartLayout = {
         title: "Top 10 Bacteria Cultures Found",
         margin: { t: 25, l: 150 }
       };
-  
+      // Plot the chart to a div tag with id "bar"
       Plotly.newPlot("bar", barData, chartLayout);
 
       // Create a bubble chart that displays each sample.
+      //Define layout
     var bubbleChart = {
         title: "Bacteria Cultures Per Sample",
         hovermode: "closest",
@@ -70,7 +72,7 @@ function buildCharts(sample) {
           }
         }
       ];
-  
+      // Plot the chart to a div tag with id "bubble"
       Plotly.newPlot("bubble", bubbleData, bubbleChart);
       
     });
@@ -81,6 +83,7 @@ function buildCharts(sample) {
     var selectDropdown = d3.selectAll("#selDataset");
   
     // Populate the select options with sample names
+    // Create drop down men
     d3.json("Data/samples.json").then((data) => {
       var name = data.names;
   
@@ -91,6 +94,18 @@ function buildCharts(sample) {
           .property("value", sample);
       })
   
+      // Use data from the list to generate charts and sidepanel
+      var sampleData = name[0];
+      buildCharts(sampleData);
+      buildPanelData(sampleData);
+    });
+  };
+  
+  function newSelection(newSample) {
+    // Generate new data each time a new sample is selected
+    buildCharts(newSample);
+    buildPanelData(newSample);
+  };
 
   
 // Initialize the dashboard
